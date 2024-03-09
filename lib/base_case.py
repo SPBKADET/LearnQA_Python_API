@@ -1,0 +1,2 @@
+class BaseCase(object):
+    pass
