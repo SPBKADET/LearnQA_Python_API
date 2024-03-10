@@ -1,4 +1,5 @@
 import requests
+import allure
 from faker import Faker
 
 fake = Faker()
@@ -6,7 +7,7 @@ fake = Faker()
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 
-
+@allure.epic("test for change user")
 class TestUserChange(BaseCase):
     def test_user_change_unauthorized(self):
         # EDIT
@@ -20,6 +21,7 @@ class TestUserChange(BaseCase):
         Assertions.assert_code_status(response3, expected_status_code=400)
         assert response3.json()['error'] == 'Auth token not supplied'
 
+    @allure.description("change authorized other user")
     def test_user_change_authorized_other_user(self):
             login_data = {
                 'email': '11123@mail.ru',
@@ -39,7 +41,7 @@ class TestUserChange(BaseCase):
             Assertions.assert_code_status(response3,expected_status_code=400)
             assert response3.json()['error'] == 'Please, do not edit test users with ID 1, 2, 3, 4 or 5.'
             print(response3.text)
-
+    @allure.description("change authorized user")
     def test_user_change_authorized_user(self):
         password = fake.password()
         email = fake.email()
@@ -72,7 +74,7 @@ class TestUserChange(BaseCase):
         Assertions.assert_code_status(response3,expected_status_code=200)
         assert 'success' in response3.json()
 
-
+    @allure.description("authorized user first name")
     def test_user_change_authorized_user_first_name(self):
         password = fake.password()
         email = fake.email()

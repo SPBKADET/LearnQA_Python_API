@@ -1,12 +1,13 @@
 import requests
 from faker import Faker
-
+import allure
 fake = Faker()
 
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 
 class TestUserDelete():
+    @allure.description("test_user_delete_invalide")
     def test_user_delete_invalide(self):
         response=requests.delete('https://playground.learnqa.ru/api/user/2',data= {
 
@@ -18,7 +19,7 @@ class TestUserDelete():
         print(response.text)
         Assertions.assert_code_status(response, 400)
         assert response.json()['error'] == f"Auth token not supplied"
-
+    @allure.description("test_user_delete_valid")
     def test_user_delete_valid(self):
         password = fake.password()
         email = fake.email()
@@ -52,7 +53,7 @@ class TestUserDelete():
 
         Assertions.assert_code_status(response3, expected_status_code=200)
         assert 'success' in response3.json()
-
+    @allure.description("test_delete_user_negative")
     def test_delete_user_negative(self):
         password = fake.password()
         email = fake.email()

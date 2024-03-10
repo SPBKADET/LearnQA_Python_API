@@ -1,9 +1,10 @@
 import requests
-
+import allure
 from lib.base_case import BaseCase
 
 
 class TestUserGet(BaseCase):
+    @allure.description("test_user_get_with_invalid_id")
     def test_user_get_with_invalid_id(self):
         email = 'vinkotovexample.com'
         data = {

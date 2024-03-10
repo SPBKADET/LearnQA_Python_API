@@ -1,8 +1,10 @@
 import pytest
 import requests
+import allure
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 class TestUserRegister(BaseCase):
+    @allure.description("test_user_register_with_invalid_email")
     def test_user_register_with_invalid_email(self):
         email='vinkotovexample.com'
         data={
@@ -15,6 +17,7 @@ class TestUserRegister(BaseCase):
         response = requests.post('https://playground.learnqa.ru/api/user/',data = data)
         Assertions.assert_code_status(response,400)
         assert response.content.decode('utf8') == f'Invalid email format'
+    @allure.description("test_user_register_with_invalid_fields")
     @pytest.mark.parametrize("test_input", [(''),(''),(''),(''),('')])
     def test_user_register_with_invalid_fields(self,test_input):
         email='vinkotovexample.com'
@@ -28,7 +31,7 @@ class TestUserRegister(BaseCase):
         response = requests.post('https://playground.learnqa.ru/api/user/',data = data)
         Assertions.assert_code_status(response, 400)
         assert f'field is too short' in response.content.decode('utf8')
-
+    @allure.description("test_user_register_with_short_name")
     def test_user_register_with_short_name(self):
         email = 'vinkotov@example.com'
         data = {
@@ -43,6 +46,7 @@ class TestUserRegister(BaseCase):
         print(response.content.decode('utf8'))
         assert response.content.decode('utf8') == f"The value of 'username' field is too short"
 
+    @allure.description("test_user_register_with_long_name")
     def test_user_register_with_long_name(self):
         email = 'vinkotov@example.com'
         data = {
